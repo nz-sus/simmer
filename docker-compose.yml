@@ -1,0 +1,63 @@
+version: "3"
+
+services:
+  elasticsearch:
+    image: elasticsearch:8.3.1
+    environment:
+      - discovery.type=single-node
+      - http.host=0.0.0.0
+      - transport.host=0.0.0.0
+      - xpack.security.enabled=false
+      - cluster.initial_master_nodes
+      - cluster.name=simmer_elasticsearch
+      - bootstrap.memory_lock=true
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    volumes:
+      - simmer_elasticsearch:/usr/share/elasticsearch/data
+    networks:
+      - simmer
+  postgres:
+    image: "postgres:10.5"
+    container_name: simmer_postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - simmer_postgres:/var/lib/postgresql/data
+    env_file:
+      - .env.config.dev      
+    networks:
+      - simmer
+  redis:
+    image: redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - simmer_redis:/data
+    networks:
+      - simmer
+  web:
+    build: .
+    command: bin/docker-start
+    env_file:
+      - .env.config.dev    
+    networks:
+      - simmer      
+    volumes:
+      - .:/rails
+    ports:
+      - "3000:3000"
+    depends_on:
+      - postgres
+      - elasticsearch
+      - redis
+
+volumes:
+  simmer_postgres:
+  simmer_redis:
+  simmer_elasticsearch:
+  
+networks:
+  simmer:
+    driver: bridge
