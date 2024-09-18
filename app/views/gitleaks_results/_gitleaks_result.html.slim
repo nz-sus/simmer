@@ -1,0 +1,75 @@
+div id="#{dom_id gitleaks_result}" class="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden md:max-w-2xl"
+  div.p-8
+    div.tracking-wide.text-sm.text-indigo-500.font-semibold
+      = gitleaks_result.description
+    p.mt-2.text-gray-500
+      strong Rule:
+      = gitleaks_result.rule_id
+    div.flex.space-x-4
+      div
+        p.mt-2.text-gray-500
+          strong Start line:
+          = gitleaks_result.start_line
+        p.mt-2.text-gray-500
+          strong End line:
+          = gitleaks_result.end_line
+      div
+        p.mt-2.text-gray-500
+          strong Start column:
+          = gitleaks_result.start_column
+        p.mt-2.text-gray-500
+          strong End column:
+          = gitleaks_result.end_column
+    div.flex.space-x-4
+      div
+        p.mt-2.text-gray-500
+          strong Match:
+          = gitleaks_result.match
+      div
+        p.mt-2.text-gray-500
+          strong Secret:
+          = gitleaks_result.secret
+    div.flex.space-x-4
+      div
+        p.mt-2.text-gray-500
+          strong File:
+          = gitleaks_result.file
+      div
+        p.mt-2.text-gray-500
+          strong Symlink file:
+          = gitleaks_result.symlink_file
+    div.flex.space-x-4
+      div
+        p.mt-2.text-gray-500
+          strong Commit:
+          = gitleaks_result.commit
+      div
+        p.mt-2.text-gray-500
+          strong Entropy:
+          = gitleaks_result.entropy
+    div.flex.space-x-4
+      div
+        p.mt-2.text-gray-500
+          strong Author:
+          = gitleaks_result.author
+      div
+        p.mt-2.text-gray-500
+          strong Email:
+          = gitleaks_result.email
+    p.mt-2.text-gray-500
+      strong Date:
+      = gitleaks_result.date
+    p.mt-2.text-gray-500
+      strong Message:
+      = gitleaks_result.message
+    p.mt-2.text-gray-500
+      strong Tags:
+      = gitleaks_result.tags
+    p.mt-2.text-gray-500
+      strong Fingerprint:
+      = gitleaks_result.fingerprint
+    p.mt-2.text-gray-500
+      strong Log entry:
+      = link_to(gitleaks_result.log_entry, target: "_blank") do
+        i.fas.fa-link
+      end

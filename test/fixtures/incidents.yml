@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: MyString
+  opened_at: 2024-03-31 09:25:10
+  closed_at: 2024-03-31 09:25:10
+  client: one
+
+two:
+  name: MyString
+  opened_at: 2024-03-31 09:25:10
+  closed_at: 2024-03-31 09:25:10
+  client: two

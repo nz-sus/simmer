@@ -1,0 +1,15 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: MyString
+  time_range_start: 2024-03-31 09:24:56
+  time_range_end: 2024-03-31 09:24:56
+  client: one
+  description: MyText
+
+two:
+  name: MyString
+  time_range_start: 2024-03-31 09:24:56
+  time_range_end: 2024-03-31 09:24:56
+  client: two
+  description: MyText

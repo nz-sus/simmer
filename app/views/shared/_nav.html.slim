@@ -1,0 +1,13 @@
+ul.flex.flex-col.flex-grow
+  li
+    = link_to clients_path, title: "Clients", class: "flex items-center px-4 py-2 hover:bg-gray-600 center-on-narrow" do
+      i.fas.fa-users.mr-2
+      span.m-2.p-2.hide-on-narrow Clients
+  li
+    = link_to DataSet, title: "Data Sets", class: "flex items-center px-4 py-2 hover:bg-gray-600 center-on-narrow" do
+      i.fas.fa-book-open.mr-2
+      span.m-2.p-2.hide-on-narrow Data Sets
+  li
+    = link_to gitleaks_results_path, title: "Gitleaks Results", class: "flex items-center px-4 py-2 hover:bg-gray-600 center-on-narrow" do
+      i.fas.fa-shield-alt.mr-2
+      span.m-2.p-2.hide-on-narrow Gitleaks Results

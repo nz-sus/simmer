@@ -1,0 +1,48 @@
+<%= form_with(model: log_entry, class: "space-y-6") do |form| %>
+  <% if log_entry.errors.any? %>
+    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+      <strong class="font-bold">Oops!</strong>
+      <span class="block sm:inline"><%= pluralize(log_entry.errors.count, "error") %> prohibited this log entry from being saved:</span>
+      <ul class="list-disc pl-5 mt-3">
+        <% log_entry.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="block w-1/2">
+    <%= form.label :data_set_id, class: "block text-sm font-medium text-gray-700" %>
+    <%= form.collection_select :data_set_id, DataSet.order(:name).all , :id, :name, { prompt: "Choose a Data Set" }, { class: "block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md" } %>
+  </div>
+
+  <div class="block">
+    <%= form.label :title, class: "block text-sm font-medium text-gray-700" %>
+    <%= form.text_field :title, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" %>
+  </div>
+
+  <div class="block">
+    <%= form.label :source, class: "block text-sm font-medium text-gray-700" %>
+    <%= form.text_field :source, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" %>
+  </div>
+
+  <div class="block w-40">
+    <%= form.label :data_schema, class: "block text-sm font-medium text-gray-700" %>
+    <%= form.select :data_schema, options_for_select(DataSet.available_schema_names.map { |schema_name| [schema_name.humanize, schema_name] }, log_entry.data_schema), {}, class: "block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md" %>
+  </div>
+
+  <div class="block w-64">
+    <%= form.label :timestamp, class: "block text-sm font-medium text-gray-700" %>
+    <%= form.datetime_field :timestamp, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" %>
+  </div>
+
+  <div class="block">
+    <%= form.label :data_json, class: "block text-sm font-medium text-gray-700" %>
+    <%= form.text_area :data_json, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50", rows: 5 %>
+  </div>
+
+
+  <div>
+    <%= form.submit class: "inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" %>
+  </div>
+<% end %>

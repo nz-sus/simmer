@@ -1,0 +1,28 @@
+<div id="<%= dom_id log_entry %>" class="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden md:max-w-2xl">
+  <div class="p-8">
+    <div class="tracking-wide text-sm text-indigo-500 font-semibold"><%= log_entry.title || "-" %></div> 
+    <p class="mt-2 text-gray-500">
+      <strong>Data Schema:</strong>
+      <%= log_entry.data_schema %>
+    </p>
+    <p class="mt-2 text-gray-500">
+      <strong>Source:</strong>
+      <%= log_entry.source %>
+    </p>
+    <p class="mt-2 text-gray-500">
+      <strong>Timestamp:</strong>
+      <%= log_entry.timestamp %>
+    </p>
+    <p class="mt-2 text-gray-500">
+      <strong>Raw JSON:</strong>
+      <pre class="bg-gray-100 p-2 rounded overflow-x-scroll"><%= log_entry.data_json.gsub(/, /, ",\n") %></pre>
+
+
+
+    </p>
+    <p class="mt-2 text-gray-500">
+      <strong>Data Set:</strong>
+      <%= link_to_if(log_entry.data_set, log_entry.data_set, log_entry.data_set) %>
+    </p>
+  </div>
+</div>

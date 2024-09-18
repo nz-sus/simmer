@@ -1,0 +1,30 @@
+table.min-w-full.bg-white
+  thead
+    tr style="background-color: #e93c3a; color: white;"      
+      th.px-4.py-2 Link
+      th.px-4.py-2 Repo
+      th.px-4.py-2 File
+      th.px-4.py-2 Start Line
+      th.px-4.py-2 Commit
+      th.px-4.py-2 Date
+      - unless @for_export 
+        th.px-4.py-2 Detail
+  tbody
+    - @gitleaks_results.each do |result|
+      tr
+        td.border.px-4.py-2 = link_to(RepoLinkService.create_link(result), target: "_blank") do
+          i.fas.fa-link          
+        - unless @for_export 
+          td.border.px-4.py-2 = link_to(result.data_set)
+        - else
+          td.border.px-4.py-2 = result.data_set
+        td.border.px-4.py-2 = result.file
+        td.border.px-4.py-2 = result.start_line
+        td.border.px-4.py-2 = result.commit&.truncate(8,omission:'')
+        - unless @for_export 
+          td.border.px-4.py-2 = result.date.to_s
+        - else
+          td.border.px-4.py-2 = result.date.to_date.to_s
+        - unless @for_export 
+          td.border.px-4.py-2 = link_to(result, target: "_blank") do
+            i.fas.fa-search        

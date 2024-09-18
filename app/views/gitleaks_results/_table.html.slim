@@ -1,0 +1,167 @@
+table.min-w-full.divide-y.divide-gray-200.border-t-2.border-gray-300.my-4
+  thead.bg-gray-50
+    tr
+      th.px-6.py-3.text-left.text-xs.font-medium.text-gray-500.uppercase.tracking-wider 
+      th.px-6.py-3.text-left.text-xs.font-medium.text-gray-500.uppercase.tracking-wider 
+      th.px-6.py-3.text-left.text-xs.font-medium.text-gray-500.uppercase.tracking-wider = sortable "severity", "Severity"
+      th.px-6.py-3.text-left.text-xs.font-medium.text-gray-500.uppercase.tracking-wider = sortable "rule_id", "Rule ID"
+      th.px-6.py-3.text-left.text-xs.font-medium.text-gray-500.uppercase.tracking-wider = sortable "file", "File"
+      th.px-6.py-3.text-left.text-xs.font-medium.text-gray-500.uppercase.tracking-wider Start Line
+      th.px-6.py-3.text-left.text-xs.font-medium.text-gray-500.uppercase.tracking-wider = sortable "commit", "Commit"
+      th.px-6.py-3.text-left.text-xs.font-medium.text-gray-500.uppercase.tracking-wider Match
+      th.px-6.py-3.text-left.text-xs.font-medium.text-gray-500.uppercase.tracking-wider Tags
+      th.px-6.py-3.text-right.text-xs.font-medium.text-gray-500.uppercase.tracking-wider[style="width: 150px;"] Actions
+  tbody.bg-white.divide-y.divide-gray-200
+    - @gitleaks_results.each do |gitleaks_result|
+      tr class="odd:bg-white even:bg-gray-200" data-controller="action-menu severity tags drilldown notes" data-action-menu-url-value=gitleaks_result_path(gitleaks_result) data-severity-type-value='gitleaks_result' data-severity-url-value=gitleaks_result_path(gitleaks_result) data-severity-value=gitleaks_result.severity data-tags-url-value=gitleaks_result_path(gitleaks_result) data-notes-type-value='gitleaks_result' data-notes-id-value=gitleaks_result.id
+        td.px-6.py-0.whitespace-nowrap.text-sm.text-gray-500 data-action="click->drilldown#toggle" 
+          i.px-4.fas.fa-chevron-right data-drilldown-target="icon"            
+        td.px-6.py-0.whitespace-nowrap.text-sm.text-gray-500
+          div id=gitleaks_result.id data-action="click->multiselect#toggle" data-multiselect-target="checkboxes" 
+            =inline_svg_tag "checkbox", style:"pointer-events:none;"
+            =inline_svg_tag "checkbox-checked", class:"hidden", style:"pointer-events:none;"      
+        td.px-6.py-0.whitespace-nowrap.text-sm.text-gray-500
+          div.flex.flex-row.space-x-4
+            div data-action="click->severity#toggleMenu"
+              - case gitleaks_result.severity
+              - when 'CRITICAL'
+                i.fas.fa-exclamation-circle.text-red-500 data-severity-target="icon" 
+              - when 'HIGH'
+                i.fas.fa-exclamation-triangle.text-orange-500 data-severity-target="icon" 
+              - when 'MEDIUM'
+                i.fas.fa-exclamation.text-yellow-500 data-severity-target="icon" 
+              - when 'LOW'
+                i.fas.fa-minus-circle.text-blue-500 data-severity-target="icon" 
+              - when 'SAFE'
+                i.fas.fa-check-circle.text-green-500 data-severity-target="icon" 
+              - when 'SUSPICIOUS'
+                i.fas.fa-eye.text-purple-500 data-severity-target="icon" 
+              - when 'NONE', 'UNKNOWN'
+                i.fas.fa-question-circle.text-gray-500 data-severity-target="icon"   
+            div data-action="click->notes#toggleModal"  
+              - if gitleaks_result.notes.loaded? && gitleaks_result.notes.any?
+                i.fas.fa-book.text-gray-700 data-notes-target="icon"
+              - else
+                i.fas.fa-book.text-gray-200 data-notes-target="icon"
+
+        td.px-6.py-0.whitespace-nowrap.text-sm.text-gray-500 = gitleaks_result.rule_id
+        td.px-6.py-0.whitespace-nowrap.text-sm.text-gray-500 = gitleaks_result.file
+        td.px-6.py-0.whitespace-nowrap.text-sm.text-gray-500 = gitleaks_result.start_line
+        td.px-6.py-0.whitespace-nowrap.text-sm.text-gray-500 = gitleaks_result.commit&.truncate(6, omission:'')
+        td.px-6.py-0.whitespace-nowrap.text-sm.text-gray-500
+          span data-controller="masking" data-masking-content-value=h(gitleaks_result.match) data-action="click->masking#toggle" Click to toggle
+        td.px-6.py-4.whitespace-nowrap.text-sm.text-gray-500
+          = render partial: "gitleaks_results/tag_list", locals: { gitleaks_result: gitleaks_result }
+          form data-action="tags#addTag" class="mt-2"
+            .flex.flex-row.space-x-2
+              input type="text" data-tags-target="tagInput" class="block w-32 mt-1 rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+              button type="submit" class="inline-flex items-center px-2 py-1 border border-transparent text-xs font-medium rounded shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500" Tag        
+        td.px-6.py-4.whitespace-nowrap.text-sm.text-gray-500
+          button type="button" data-action="click->action-menu#toggleMenu" class="text-blue-600 hover:text-blue-900"
+            i.fas.fa-ellipsis-v
+          / Menu container
+          div data-action-menu-target="container" class="hidden absolute bg-white shadow-md rounded z-10" style="width: 200px;"
+            ul.list-none
+              li
+                = link_to 'Create Incident', new_incident_path(gitleaks_result_ids: gitleaks_result.id, incident:{name:gitleaks_result.name_for_incident} ), class: 'block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100'                
+              li
+                = link_to 'Destroy Result', gitleaks_result_path(gitleaks_result, format: :html), method: :delete, data: { turbo: false, confirm: 'Are you sure?' }, class: 'block px-4 py-2 text-sm text-red-600 hover:bg-gray-100'
+          / Close button
+          button type="button" data-action="click->action-menu#closeMenu" class="absolute top-0 right-0 mt-2 mr-2 text-gray-400 hover:text-gray-600"
+            i.fas.fa-times          
+      tr.hidden.detailPane
+        td colspan="8"  
+          .details-panel.p-4.bg-gray-300.rounded-lg.shadow-inner
+            h4.font-semibold.text-lg.text-indigo-600 = gitleaks_result.description
+            div.grid.grid-cols-2.gap-4
+              div
+                p.text-gray-500
+                  strong Rule:
+                  = gitleaks_result.rule_id
+              div data-controller="copy"
+                p.text-gray-500 
+                  strong File: 
+                  span data-copy-target="text" = gitleaks_result.file
+                  button data-action="click->copy#copy" class="bg-transparent border-none cursor-pointer p-1"
+                    i.fas.fa-clipboard.copy-button
+              div
+                p.text-gray-500
+                  strong Commit: 
+                  = gitleaks_result.commit
+              div
+                p.text-gray-500
+                  strong Start line: 
+                  = gitleaks_result.start_line
+              div
+                p.text-gray-500
+                  strong End line: 
+                  = gitleaks_result.end_line
+              div
+                p.text-gray-500
+                  strong Start column: 
+                  = gitleaks_result.start_column
+              div
+                p.text-gray-500
+                  strong End column: 
+                  = gitleaks_result.end_column
+              div
+                p.text-gray-500
+                  strong Data Set: 
+                  = gitleaks_result.data_set
+              div.col-span-2
+                p.text-gray-500
+                  strong Match:
+                  span data-controller="masking" data-masking-content-value=h(gitleaks_result.match) data-action="click->masking#toggle" Click to toggle
+              div.col-span-2 data-controller="copy"
+                p.text-gray-500
+                  strong Secret:
+                  span data-controller="masking" data-masking-content-value=h(gitleaks_result.secret) data-action="click->masking#toggle" Click to toggle
+                  span.hidden data-copy-target="text" = gitleaks_result.secret
+                  button data-action="click->copy#copy" class="bg-transparent border-none cursor-pointer p-1"
+                    i.fas.fa-clipboard.copy-button
+                  a href=client_masked_secret_path(gitleaks_result.client, gitleaks_result.masked_secret) target="_blank" class="bg-transparent border-none cursor-pointer p-1"
+                    i.fas.fa-link  
+                  end
+              div.col-span-2
+                p.text-gray-500
+                  strong Symlink file:
+                  = gitleaks_result.symlink_file
+              div.col-span-2
+                p.text-gray-500
+                  strong Entropy:
+                  = gitleaks_result.entropy
+              div.col-span-2
+                p.text-gray-500
+                  strong Author:
+                  = gitleaks_result.author
+              div.col-span-2
+                p.text-gray-500
+                  strong Email:
+                  span data-controller="masking" data-masking-content-value=h(gitleaks_result.email) data-action="click->masking#toggle" Click to toggle
+              div.col-span-2
+                p.text-gray-500
+                  strong Date:
+                  = gitleaks_result.date
+              div.col-span-2
+                p.text-gray-500
+                  strong Message:
+                  = gitleaks_result.message
+              div.col-span-2
+                p.text-gray-500
+                  strong Tags:
+                  = gitleaks_result.gltags
+              div.col-span-2 data-controller="copy"
+                p.text-gray-500 
+                  strong Fingerprint:
+                  span data-copy-target="text" = gitleaks_result.fingerprint
+                  button data-action="click->copy#copy" class="bg-transparent border-none cursor-pointer p-1"
+                    i.fas.fa-clipboard.copy-button
+              div.col-span-2
+                p.text-gray-500
+                  strong Log entry:
+                  = link_to gitleaks_result.log_entry
+              div.col-span-2
+                p.text-gray-500
+                  strong Tags                  
+                  = render partial: "gitleaks_results/tag_list", locals: { gitleaks_result: gitleaks_result }
+= paginate(@gitleaks_results, params: @target_action.merge({ add: nil, remove: nil }), remote: false)

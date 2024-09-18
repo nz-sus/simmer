@@ -1,0 +1,20 @@
+[{
+  "Description": "AWS",
+  "StartLine": 15,
+  "EndLine": 15,
+  "StartColumn": 16,
+  "EndColumn": 35,
+  "Match": "AKIABNJEBAL332439DIA",
+  "Secret": "AKIABNJEBAL332439DIA",
+  "File": "SUS/gitleaks/example_leaks/aws_leak.example",
+  "SymlinkFile": "",
+  "Commit": "aa8c4aac575b521d994bd3cc2b1504f3b409ecf2",
+  "Entropy": 3.4841838,
+  "Author": "Noah Zitsman",
+  "Email": "noah@startup.dev",
+  "Date": "2024-03-27T14:45:11Z",
+  "Message": "precommit test from linux",
+  "Tags": [],
+  "RuleID": "aws-access-token",
+  "Fingerprint": "aa8c4aac575b521d994bd3cc2b1504f3b409ecf2:SUS/gitleaks/example_leaks/aws_leak.example:aws-access-token:15"
+ }]

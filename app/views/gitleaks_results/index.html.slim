@@ -1,0 +1,7 @@
+= content_for :title, "Gitleaks Results Dashboard"
+.flex.space-x-4.flex-col data-controller="multiselect"
+  div.flex.flex-row.space-x-12
+    = render partial: "gitleaks_results/search_and_filters", locals: { gitleaks_results: @gitleaks_results }
+    = render partial: "gitleaks_results/multiselect_menu"  
+  #gitleaks_results_table data-session-filters-target="resultsTable"
+    = render partial: "gitleaks_results/table", locals: { gitleaks_results: @gitleaks_results }

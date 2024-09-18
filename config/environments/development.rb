@@ -9,7 +9,7 @@ Rails.application.configure do
   config.enable_reloading = true
 
   # Do not eager load code on boot.
-  config.eager_load = false
+  config.eager_load = false  
 
   # Show full error reports.
   config.consider_all_requests_local = true
@@ -23,7 +23,7 @@ Rails.application.configure do
     config.action_controller.perform_caching = true
     config.action_controller.enable_fragment_cache_logging = true
 
-    config.cache_store = :redis_store, "redis://#{ENV.fetch('REDIS_HOST', 'localhost')}:6379/0/cache", { expires_in: 90.minutes }
+    config.cache_store = :redis_store, "redis://redis:6379/0/cache", { expires_in: 90.minutes }
 
     config.public_file_server.headers = {
       "Cache-Control" => "public, max-age=#{2.days.to_i}"
@@ -34,6 +34,8 @@ Rails.application.configure do
     config.cache_store = :null_store
   end
 
+#  config.public_file_server.enabled = true
+
   # Store uploaded files on the local file system (see config/storage.yml for options).
   config.active_storage.service = :local
 
@@ -41,8 +43,8 @@ Rails.application.configure do
   config.action_mailer.raise_delivery_errors = false
 
   config.action_mailer.perform_caching = false
-  
-  config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
+
+  config.action_mailer.default_url_options = { host: 'sim.local', port: 3000 }
 
   # Print deprecation notices to the Rails logger.
   config.active_support.deprecation = :log
@@ -64,6 +66,12 @@ Rails.application.configure do
 
   # Suppress logger output for asset requests.
   config.assets.quiet = true
+  config.assets.debug = true
+  config.assets.compile = true
+
+  config.force_ssl = true
+  config.hosts << "sim.local"
+
 
   # Raises error for missing translations.
   # config.i18n.raise_on_missing_translations = true
@@ -72,7 +80,7 @@ Rails.application.configure do
   # config.action_view.annotate_rendered_view_with_filenames = true
 
   # Uncomment if you wish to allow Action Cable access from any origin.
-  # config.action_cable.disable_request_forgery_protection = true
+  config.action_cable.disable_request_forgery_protection = true
 
   # Raise error when a before_action's only/except options reference missing actions
   config.action_controller.raise_on_missing_callback_actions = true

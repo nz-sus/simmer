@@ -1,0 +1,6 @@
+#!/bin/bash
+
+# Start the Rails server and Tailwind CSS watcher in parallel
+bin/rails server &
+yarn tailwindcss --postcss -i ./app/assets/stylesheets/application.tailwind.css -o ./app/assets/builds/application.css --watch
+

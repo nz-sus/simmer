@@ -1,0 +1,7 @@
+div.pt-1 data-filters-target="active"
+  - active_filters.each do |key, values|
+    - values.each do |value|      
+      - display_value = filter_value_map.fetch("#{key}^#{value}", value)
+      span.inline-flex.items-center.text-xs.font-semibold.mr-2.px-2.5.py-1.5.rounded class=filter_color_class(key)
+        = "#{key}: #{display_value}"
+        button type="button" data-action="click->session-filters#removeFilter" data-filter-type=key data-filter-value=value class="text-red-500 bg-transparent border-none" x

@@ -1,0 +1,43 @@
+doctype html
+html.h-full.bg-white
+  head
+    meta[name="viewport" content="width=device-width,initial-scale=1"]
+    title
+      = title
+      |  - SIMmer
+    = csrf_meta_tags
+    = csp_meta_tag
+    = stylesheet_link_tag "application", "data-turbo-track": "reload"    
+    = stylesheet_link_tag "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css", "data-turbo-track": "reload"
+    = stylesheet_link_tag "https://fonts.googleapis.com/css2?family=Manrope:wght@400;700&display=swap", "data-turbo-track": "reload"    
+    
+
+    = stylesheet_link_tag "https://unpkg.com/trix@2.0.8/dist/trix.css", "data-turbo-track": "reload"
+    link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"
+    link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png"
+    link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"
+    link rel="manifest" href="/site.webmanifest"
+    meta name="msapplication-TileColor" content="#da532c"
+    meta name="theme-color" content="#ffffff"
+
+
+    = javascript_include_tag "application" , "data-turbo-track": "reload", defer: true
+  body class="flex h-screen"
+    div class="flex flex-col w-64 bg-gray-800 text-white"
+      div class="flex items-center justify-center h-16 bg-gray-900"
+        h1 class="text-2xl font-bold hide-on-narrow" SIMmer
+        h1 class="text-2xl font-bold show-on-narrow" SIM
+      = render "shared/active_client"
+      = render "shared/nav"
+
+      div class="p-4 w-full"        
+        = button_to "Logout", destroy_user_session_path, method: :delete, class: "w-full py-2 bg-blue-500 hover:bg-blue-700 rounded text-white inline-block text-center", data: { turbo: false, confirm: "End your session?" }
+    div class="flex-grow flex flex-col bg-gray-100"
+      div class="flex-1 p-4 overflow-y-auto"      
+        = yield
+      div
+        = render "shared/footer"
+    #flash-container
+      - flash.each do |key, value|
+        = render "shared/flash", level: key, content: value    
+    = render partial:"notes/modal", locals: { notes: @notes||[], noteable:nil }

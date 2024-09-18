@@ -1,0 +1,17 @@
+/ app/views/shared/_active_client.html.slim
+- active_client = active_client() # Assuming active_client is a helper method
+- clients = Client.all
+
+section#active-client
+  = form_with url: set_active_clients_path, method: :post, local: true, id: 'client-form' do |form|
+    label for="client-select" Active Client:
+    select name="client_id" id="client-select" class="text-gray-500" onchange="this.form.submit()"
+      option value="" selected=(active_client.nil?) All
+      - clients.each do |client|
+        - selected = (client == active_client) ? 'selected' : nil
+        option value=client.id selected=selected = client.name
+
+  script
+    | document.getElementById('client-select').addEventListener('change', function() {
+    |   document.getElementById('client-form').submit();
+    | });

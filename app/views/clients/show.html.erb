@@ -1,0 +1,128 @@
+<div class="max-w-7xl">
+<% if notice %>
+  <p class="text-green-500"><%= notice %></p>
+<% end %>
+
+<div class="mb-4 flex justify-between space-x-2">
+  <%= link_to "Back to clients", clients_path, class: "inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-blue-600 hover:text-blue-900" %>
+  <%= link_to "Edit this client", edit_client_path(@client), class: "inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-blue-600 hover:text-blue-900" %>
+  <%= link_to 'Export Page', '#', id: 'export-btn', class: 'btn btn-primary' %>
+
+<script>
+  document.getElementById('export-btn').addEventListener('click', function(event) {
+    event.preventDefault();
+    fetch('<%= export_client_path(@client) %>')
+      .then(response => response.text())
+      .then(html => {
+        const blob = new Blob([html], { type: 'text/html' });
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = '<%=@client.report_name%>.html';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      })
+      .catch(error => console.error('Error:', error));
+  });
+</script>
+
+</div>
+
+<div class="mb-4">
+  <h2 class="text-lg font-bold">Client Information</h2>
+  <p>Name: <%= @client.name %></p>
+  <p>Data Sets Processed: <%= @client.data_sets.count %></p>
+  <p>Data Sets with Detected Leaks: <%= @client.data_sets_with_log_entries_count %></p>
+  <p>Total Detected Leaks: <%= @client.total_gitleaks_secrets_count %></p>
+  <p>Total Suspected Leaks: <%= @client.suspected_leaks_count %></p>  
+  <p class="font-bold">Unique Suspected Leaks: <%= @client.masked_secrets.above_severity("SUSPICIOUS").count %></p>
+</div>
+
+<div class="mb-4">
+  <h2 class="text-lg font-bold">Gitleaks Rule ID Counts</h2>
+  <table class="min-w-full bg-white">
+    <thead>
+      <tr>
+        <th class="px-4 py-2">Rule ID</th>
+        <th class="px-4 py-2">Count</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @client.rule_id_counts.each do |rule_id, count| %>
+        <tr>
+          <td class="border px-4 py-2"><%= rule_id %></td>
+          <td class="border px-4 py-2"><%= count %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+
+<div class="mb-4 max-w-xl min-w-full">
+  <div>
+    <%= render "shared/minimum_display_severity" %>
+  </div>
+  <h2 class="text-lg font-bold">Gitleaks Secrets Counts (Masked)</h2>
+  <table class="min-w-full bg-white">
+    <thead>
+      <tr>
+        <th class="px-4 py-2 w-20">Detail</th>
+        <th class="px-4 py-2 w-96">Masked Secret</th>
+        <th class="px-4 py-2 w-20">Severity</th>
+        <th class="px-4 py-2 w-20">Uniq</th>
+        <th class="px-4 py-2">Comments</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @client.masked_secrets.above_severity(@minimum_display_severity).by_count.each do |masked_secret| %>
+        <tr data-controller="notes severity" data-notes-type-value='masked_secret' data-notes-id-value='<%=masked_secret.id%>' data-severity-type-value='masked_secret' data-severity-url-value="<%=client_masked_secret_path(@client, masked_secret)%>" data-severity-value="<%=masked_secret.severity%>" >
+          <td class="border px-4 py-2">
+            <%= link_to client_masked_secret_path(@client, masked_secret), target: "_blank" do %>
+              <i class="fas fa-search text-gray-700" data-notes-target="icon"></i>
+            <% end %>
+          </td>
+
+          <td class="border px-4 py-2"><%= masked_secret.rule_id %>: <%= masked_secret.secret %></td>
+          <td class="border px-4 py-2">
+            <div data-action="click->severity#toggleMenu">
+              <% case masked_secret.severity %>
+              <% when 'CRITICAL' %>
+                <i class="fas fa-exclamation-circle text-red-500" data-severity-target="icon"></i>
+              <% when 'HIGH' %>
+                <i class="fas fa-exclamation-triangle text-orange-500" data-severity-target="icon"></i>
+              <% when 'MEDIUM' %>
+                <i class="fas fa-exclamation text-yellow-500" data-severity-target="icon"></i>
+              <% when 'LOW' %>
+                <i class="fas fa-minus-circle text-blue-500" data-severity-target="icon"></i>
+              <% when 'SAFE' %>
+                <i class="fas fa-check-circle text-green-500" data-severity-target="icon"></i>
+              <% when 'SUSPICIOUS' %>
+                <i class="fas fa-eye text-purple-500" data-severity-target="icon"></i>
+              <% when 'NONE', 'UNKNOWN' %>
+                <i class="fas fa-question-circle text-gray-500" data-severity-target="icon"></i>
+              <% end %>
+            </div>
+          </td>
+          <td class="border px-4 py-2"><%= masked_secret.gitleaks_results.pluck(:data_set_id,:file).uniq.count %></td>
+          <td class="border px-4 py-2 ">
+            <div data-action="click->notes#toggleModal" class="flex space-x-2">
+              <% if masked_secret.note%>
+                <div>
+                  <i class="fas fa-book text-gray-700" data-notes-target="icon"></i>
+                </div>
+                <div>
+                  <%= raw masked_secret.note&.content %>
+                </div>            
+              <% else %>
+                <i class="fas fa-book text-gray-200" data-notes-target="icon"></i>
+              <% end %>
+            </div>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+
+<%= render @client %>
+</div>

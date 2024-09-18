@@ -1,0 +1,10 @@
+p style="color: green" = notice
+
+== render @gitleaks_result
+
+div
+  => link_to "Edit this gitleaks result", edit_gitleaks_result_path(@gitleaks_result)
+  '|
+  =< link_to "Back to gitleaks results", gitleaks_results_path
+
+  = button_to "Destroy this gitleaks result", @gitleaks_result, method: :delete

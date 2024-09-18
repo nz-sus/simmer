@@ -1,0 +1,43 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  description: MyString
+  start_line: 1
+  end_line: 1
+  start_column: 1
+  end_column: 1
+  match: MyString
+  secret: MyString
+  file: MyString
+  symlink_file: MyString
+  commit: MyString
+  entropy: 1.5
+  author: MyString
+  email: MyString
+  date: 2024-04-01 11:23:33
+  message: MyText
+  gltags: MyText
+  rule_id: MyString
+  fingerprint: MyString
+  log_entry: one
+
+two:
+  description: MyString
+  start_line: 1
+  end_line: 1
+  start_column: 1
+  end_column: 1
+  match: MyString
+  secret: MyString
+  file: MyString
+  symlink_file: MyString
+  commit: MyString
+  entropy: 1.5
+  author: MyString
+  email: MyString
+  date: 2024-04-01 11:23:33
+  message: MyText
+  gltags: MyText
+  rule_id: MyString
+  fingerprint: MyString
+  log_entry: two

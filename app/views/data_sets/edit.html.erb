@@ -1,0 +1,11 @@
+<h1>Editing data set</h1>
+
+<%= render "form", data_set: @data_set %>
+
+<br>
+
+<div>
+  <%= link_to "Show this data set", @data_set %> |
+  <%= link_to "Destroy this data set", @data_set, method: :delete, data: { confirm: "Are you sure?" } %> |
+  <%= link_to "Back to data sets", data_sets_path %>
+</div>

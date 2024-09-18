@@ -1,0 +1,129 @@
+<div class="max-w-4xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+  <div class="mb-4 flex justify-between space-x-2">
+    <%= link_to "Back to data sets", data_sets_path, class: "inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-blue-600 hover:text-blue-900" %>
+    <%= link_to "Edit this data set", edit_data_set_path(@data_set), class: "inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-blue-600 hover:text-blue-900" %>
+    <%= button_to "Destroy this data set", @data_set, method: :delete, data: { confirm: "Are you sure you want to permanently delete this data set?" }, class: "inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500" %>
+  </div>
+  <div class="bg-white shadow overflow-hidden sm:rounded-lg">    
+    <div class="border-t border-gray-200">
+      <%= render @data_set %>
+    </div>
+  </div>
+
+
+  <div class="section">
+  <h2 class="text-2xl font-bold">Import</h2>
+
+  <div class="mt-5">
+    <div data-controller="drilldown">
+      <input type="checkbox" id="from-file-toggle" class="hidden">
+      <label for="from-file-toggle" class="block cursor-pointer py-2 text-md font-semibold text-gray-700" data-action="click->drilldown#toggleContainer">
+        <i class="fas fa-chevron-right" data-drilldown-target="icon"></i> From file
+      </label>
+
+      <div class="sub-collapsible-content hidden" data-drilldown-target="container">
+        <div>
+          <h2 class="mt-8 text-2xl font-bold">Import Log Entries for <%= @data_set %> </h2>
+        </div>
+
+        <div class="mt-5">
+          <%= form_with(url: import_json_data_set_path(@data_set), local: true, multipart: true, class: "space-y-4") do |form| %>
+            <div class="flex flex-row">
+              <div class="w-1/2">
+                <%= form.label :schema_name, "Schema Name", class: "block text-sm font-medium text-gray-700" %>
+                <%= form.text_field :schema_name, readonly: true, tabindex: -1, value: @data_set.schema_name, class: "mt-1 px-2 block w-full lg:w-1/2 border border-gray-300 rounded-md shadow-sm text-sm leading-tight focus:outline-none focus:ring-blue-500 focus:border-blue-500" %>
+              </div>
+              <div class="w-1/2">
+                <%= form.label :file, "Upload File", class: "block text-sm font-medium text-gray-700" %>
+                <%= form.file_field :file, class: "mt-1 mx-2 block w-full lg:w-1/2 border border-gray-300 rounded-md shadow-sm text-sm leading-tight focus:outline-none focus:ring-blue-500 focus:border-blue-500" %>
+              </div>
+
+              <%= form.hidden_field :id, value: @data_set.id %>      
+            </div>
+
+            <div>
+              <%= form.submit "Import Log Entries", class: "inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+
+    <div data-controller="drilldown">
+      <input type="checkbox" id="from-form-toggle" class="hidden">
+      <label for="from-form-toggle" class="block cursor-pointer py-2 text-md font-semibold text-gray-700" data-action="click->drilldown#toggleContainer">
+        <i class="fas fa-chevron-right" data-drilldown-target="icon"></i> From form
+      </label>
+
+      <div class="sub-collapsible-content hidden" data-drilldown-target="container">
+        <%= form_with(url: import_form_data_set_path(@data_set), local: true, class: "space-y-4") do |form| %>
+          <div class="flex flex-col w-full">
+            <%= form.hidden_field :data_schema, value: "gitleaks" %>
+            <%= form.label :message, "Message", class: "block text-sm font-medium text-gray-700" %>
+            <%= form.text_field :message, autocomplete: "off", class: "mt-1 px-2 block w-full lg:w-1/2 border border-gray-300 rounded-md shadow-sm text-sm leading-tight focus:outline-none focus:ring-blue-500 focus:border-blue-500" %>
+
+            <%= form.label :rule_id, "Rule IDs", class: "block text-sm font-medium text-gray-700" %>
+            <%= form.select :rule_id, options_for_select(@gitleaks_rule_ids), {}, class: "mt-1 px-2 block w-full lg:w-1/2 border border-gray-300 rounded-md shadow-sm text-sm leading-tight focus:outline-none focus:ring-blue-500 focus:border-blue-500" %>
+
+            <%= form.label :commit, "Commit", class: "block text-sm font-medium text-gray-700" %>
+            <%= form.text_field :commit, class: "mt-1 px-2 block w-full lg:w-1/2 border border-gray-300 rounded-md shadow-sm text-sm leading-tight focus:outline-none focus:ring-blue-500 focus:border-blue-500" %>
+
+            <%= form.label :commit_timestamp, "Commit Timestamp", class: "block text-sm font-medium text-gray-700" %>
+            <%= form.datetime_field :commit_timestamp, class: "mt-1 px-2 block w-full lg:w-1/2 border border-gray-300 rounded-md shadow-sm text-sm leading-tight focus:outline-none focus:ring-blue-500 focus:border-blue-500" %>
+
+            <%= form.label :commit_email, "Commit Email",  class: "block text-sm font-medium text-gray-700" %>
+            <%= form.email_field :commit_email, id: "gitleaks-email",autocomplete: "off", class: "mt-1 px-2 block w-full lg:w-1/2 border border-gray-300 rounded-md shadow-sm text-sm leading-tight focus:outline-none focus:ring-blue-500 focus:border-blue-500" %>
+
+            <%= form.label :commit_author, "Commit Author",  class: "block text-sm font-medium text-gray-700" %>
+            <%= form.text_field :commit_author, id: "gitleaks-author",autocomplete: "off", class: "mt-1 px-2 block w-full lg:w-1/2 border border-gray-300 rounded-md shadow-sm text-sm leading-tight focus:outline-none focus:ring-blue-500 focus:border-blue-500" %>
+
+            <%= form.label :file, "File", class: "block text-sm font-medium text-gray-700" %>
+            <%= form.text_field :file, id: "gitleaks-file",autocomplete: "off", class: "mt-1 px-2 block w-full lg:w-1/2 border border-gray-300 rounded-md shadow-sm text-sm leading-tight focus:outline-none focus:ring-blue-500 focus:border-blue-500" %>
+
+            <%= form.label :match, "Match", class: "block text-sm font-medium text-gray-700" %>
+            <%= form.password_field :match, id: "gitleaks-match", autocomplete: "off", class: "mt-1 px-2 block w-full lg:w-1/2 border border-gray-300 rounded-md shadow-sm text-sm leading-tight focus:outline-none focus:ring-blue-500 focus:border-blue-500" %>
+
+            <%= form.label :secret, "Secret", class: "block text-sm font-medium text-gray-700" %>
+            <%= form.password_field :secret, id: "gitleaks-secret", autocomplete: "off", class: "mt-1 px-2 block w-full lg:w-1/2 border border-gray-300 rounded-md shadow-sm text-sm leading-tight focus:outline-none focus:ring-blue-500 focus:border-blue-500" %>
+          </div>
+
+          <div>
+            <%= form.submit "Add Gitleaks Entry", class: "inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+  <div class="mt-8">
+    <h2 class="text-2xl font-bold">Log Entries for <%=@data_set %> </h2>
+  </div>
+  <div class="mt-5">
+    <table class="min-w-full divide-y divide-gray-200">
+      <thead>
+        <tr>
+          <th class="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">ID</th>
+          <th class="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">Log Entry</th>
+          <th class="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">Created At</th>
+        </tr>
+      </thead>
+      <tbody class="bg-white divide-y divide-gray-200">
+        <% @data_set.log_entries.each do |log_entry| %>
+          <tr>
+            <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 font-medium text-gray-900">
+              <%= log_entry.id %>
+            </td>
+            <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-500">
+              <%= log_entry %>
+            </td>
+            <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-500">
+              <%= log_entry.created_at %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+
+</div>

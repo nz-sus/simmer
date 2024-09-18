@@ -1,0 +1,40 @@
+<%# app/views/clients/index.html.erb %>
+
+<%= content_for :title, "Clients Dashboard" %>
+<div class="flex space-x-4 ">
+  <div>
+    <h1 class="m-2">Clients</h1>
+  </div>
+  <div>
+    <%= link_to 'New Client', new_client_path, class: 'inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500' %>
+  </div>
+</div>
+<div class="overflow-x-auto">
+  <table class="min-w-full divide-y divide-gray-200">
+    <thead class="bg-gray-50">
+      <tr>
+        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Data Sets</th>
+        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Log Entries</th>
+        <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider" style="width: 150px;">Actions</th>
+      </tr>
+    </thead>
+    <tbody class="bg-white divide-y divide-gray-200">
+      <% @clients.each do |client| %>
+        <tr>
+          <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"><%= client.name %></td>
+          <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+            <%= link_to client.data_sets.count, data_sets_path(client_id: client.id) %>
+          </td>
+          <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+            <%= link_to client.data_sets.joins(:log_entries).count, log_entries_path(client_id: client.id) %>
+          </td>
+          <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-right" style="width: 150px;">
+            <%= link_to 'Show', client, class: 'text-blue-600 hover:text-blue-900' %> |
+            <%= link_to 'Edit', edit_client_path(client), class: 'text-blue-600 hover:text-blue-900' %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

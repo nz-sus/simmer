@@ -12,8 +12,8 @@ services:
       - cluster.name=simmer_elasticsearch
       - bootstrap.memory_lock=true
     ports:
-      - "9200:9200"
-      - "9300:9300"
+      - "127.0.0.1:9200:9200"
+      - "127.0.0.1:9300:9300"
     volumes:
       - simmer_elasticsearch:/usr/share/elasticsearch/data
     networks:
@@ -22,7 +22,7 @@ services:
     image: "postgres:10.5"
     container_name: simmer_postgres
     ports:
-      - "5432:5432"
+      - "127.0.0.1:5432:5432"
     volumes:
       - simmer_postgres:/var/lib/postgresql/data
     env_file:
@@ -32,7 +32,7 @@ services:
   redis:
     image: redis
     ports:
-      - "6379:6379"
+      - "127.0.0.1:6379:6379"
     volumes:
       - simmer_redis:/data
     networks:
@@ -47,7 +47,7 @@ services:
     volumes:
       - .:/rails
     ports:
-      - "3000:3000"
+      - "127.0.0.1:3000:3000"
     depends_on:
       - postgres
       - elasticsearch

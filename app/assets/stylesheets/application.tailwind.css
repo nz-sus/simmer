@@ -1,5 +1,106 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
 
-/* Custom styles can go here */
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+
+@media (max-width: 1400px) {
+  .hide-on-narrow {
+    display: none;
+  }
+  .show-on-narrow {
+    display: inline-block;    
+  }
+  .center-on-narrow {
+    justify-content: center;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+  }
+}
+@media (min-width: 1401px) {  
+  .show-on-narrow {    
+    display: none;
+  }
+  .center-on-narrow {
+    justify-content: left;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+  }
+}
+@keyframes copyAnimation {
+  0% { 
+    transform: scale(1); 
+    color: initial;
+  }
+  50% { 
+    transform: scale(1.1); 
+    color: lightblue;
+  }
+  100% { 
+    transform: scale(1); 
+    color: initial;
+  }
+}
+
+
+.copy-button.copied {
+  animation: copyAnimation 0.5s ease;
+}
+
+/* add css to the option tags within this div*/
+#session_filters {
+  option {
+    padding: 0.5rem;
+    margin: 0.5rem;
+    border-radius: 0.25rem;
+    border: 1px solid #e2e8f0;
+  }
+  option:checked {
+    font-weight: bold;    
+  }
+  select[data-session-filters-type-value="severity"] option {
+    color: #9B1C1C;
+  }  
+  select[data-session-filters-type-value="severity"] option:checked {
+    background-color: #FDE8E8;    
+  }
+  select[data-session-filters-type-value="rule_id"] option {
+    color: #03543F;
+  }
+  select[data-session-filters-type-value="rule_id"] option:checked {
+    background-color: #DEF7EC;    
+  }
+  select[data-session-filters-type-value="commit"] option {
+    color: #723B13;
+  }
+  select[data-session-filters-type-value="commit"] option:checked {
+    background-color: #FDF6B2;    
+  }
+  select[data-session-filters-type-value="file"] option {
+    color: #5521B5;
+  }
+  select[data-session-filters-type-value="file"] option:checked {
+    background-color: #EDEBFE;    
+  }
+}
+/* Create a tailwind class for the button that combines all of these
+a.px-2.py-1.border.border-gray-300.rounded.hover:bg-gray-100
+*/
+
+.pagination-button {
+  @apply px-2 py-1 border border-gray-300 rounded hover:bg-gray-200 font-bold text-lg;
+}
+
+.pagination-button.current {
+  @apply border-none;  
+}
+
+.pagination-button a {
+  @apply font-normal;
+}
+
+.disabledButton {
+  @apply cursor-not-allowed opacity-50;
+}
+body {
+  font-family: 'Manrope', sans-serif;
+}

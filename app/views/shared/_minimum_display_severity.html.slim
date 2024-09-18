@@ -1,0 +1,16 @@
+/ app/views/shared/_minimum_display_severity.html.slim
+- minimum_display_severity = minimum_display_severity() # Assuming minimum_display_severity is a helper method
+- severities_options = severities_for_select()
+
+section#minimum-display-severity
+  = form_with url: set_minimum_display_severity_clients_path, method: :post, local: true, id: 'minimum-display-severity-form' do |form|
+    label for="minimum-display-severity-select" Minimum severity to display:
+    select name="minimum_display_severity" id="minimum-display-severity-select" class="text-gray-500" onchange="this.form.submit()"      
+      - severities_options.each do |severity_name, severity_value|
+        - selected = (severity_value == minimum_display_severity) ? 'selected' : nil
+        option value=severity_value selected=selected = severity_name
+      
+  /script
+  /  | document.getElementById('minimum-display-severity-select').addEventListener('change', function() {
+  /  |   document.getElementById('minimum-display-severity-form').submit();
+  /  | });

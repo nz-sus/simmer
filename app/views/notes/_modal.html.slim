@@ -1,0 +1,35 @@
+/ Modal for notes
+- hide_class = noteable.blank? ? "hidden" : ""
+div#notesModal.fixed.inset-0.bg-black.bg-opacity-50.pt-4 data-controller="notes" class="#{hide_class}" data-notes-type-value=noteable&.class data-notes-id-value=noteable&.id
+  div.modal-content.relative.bg-white.rounded-lg.shadow-lg.m-auto.p-6.w-1/2.overflow-y-auto style="max-height: 800px;"
+    / Close button
+    button.close-modal.absolute.top-2.right-2.text-gray-500.hover:text-gray-700 data-action="click->notes#toggleModal"
+      i.fas.fa-times
+    / Modal header
+    - if noteable.blank?
+      h3.text-lg.font-semibold.mb-4 Loading...
+    - else
+      h3.text-lg.font-semibold.mb-4 #{noteable.class} #{noteable}
+      / Trix editor for new note
+      div.mb-2
+        - if is_single_note
+          input type="hidden" id="single_note_content" name="single_note[content]" value=single_note&.content
+          trix-editor input="single_note_content"
+        -else
+          trix-editor.input data-trix-input
+      / Add note button
+      div.flex.flex-row.space-x-4.mb-2
+        button.add-note.py-2.px-4.bg-blue-500.text-white.rounded.hover:bg-blue-600 data-action="click->notes#addNote"
+          | Add Note
+        div.py-2.adding_note.hidden
+          i.fa.fa-circle-notch.fa-spin
+
+      / List of notes
+      / if one note, display it
+      - if is_single_note
+        ul.notes-list
+          = render partial: "notes/note", locals: { note: single_note } if single_note
+      -else 
+        ul.notes-list
+          - notes.each do |note|
+            = render partial: "notes/note", locals: { note: note }

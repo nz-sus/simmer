@@ -1,0 +1,24 @@
+<div data-multiselect-target="actionMenuSpacer" class="w-full p-4 leading-4">
+  <div class=" pr-8 mr-8">
+    &nbsp;
+  </div>
+</div>
+<div data-multiselect-target="actionMenu" class="hidden w-full bg-dark p-4 rounded uppercase text-gray-500 not-italic font-bold leading-4 uppercase flex">
+  <div class="border-r-2 border-darkish pr-8 mr-8">
+    Actions
+  </div>
+  <div class="flex space-x-8">
+      <%= link_to "#", class: "hover:text-white", title: "Mark Safe", data:{
+        action:"click->multiselect#assign_severity", multiselect_target:"severity", "multiselect-severity-value"=>"SAFE"} do %>
+          <i class="fas fa-check-circle text-green-500 mr-2"></i>
+      <% end %>
+      <%= link_to "#", class: "hover:text-white", title: "Mark Critical", data:{
+        action:"click->multiselect#assign_severity", multiselect_target:"severity", "multiselect-severity-value"=>"CRITICAL"} do %>
+          <i class="fas fa-exclamation-circle text-red-500 mr-2"></i>
+      <% end %>
+      <%= link_to inline_svg_tag("delete-icon"), "#", class: "hover:text-white fill-white", title: "Delete selected", data:{
+        action:"click->multiselect#delete",
+        confirm:"This will delete all selected items. This cannot be undone! Are you sure?"} %>
+      <%#= link_to "Export", "#", class: "hover:text-white" %>
+  </div>
+</div>

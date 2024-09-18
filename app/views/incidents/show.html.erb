@@ -1,0 +1,35 @@
+<% if notice %>
+  <p class="text-green-500"><%= notice %></p>
+<% end %>
+
+<div class="mb-4 flex justify-between space-x-2">
+  <%= link_to "Back to incidents", incidents_path, class: "inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-blue-600 hover:text-blue-900" %>
+  <%= link_to "Edit this incident", edit_incident_path(@incident), class: "inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-blue-600 hover:text-blue-900" %>
+  <%= button_to "Destroy this incident", @incident, method: :delete, data: { confirm: "Are you sure you want to permanently delete this incident?" }, class: "inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500" %>
+</div>
+
+<%= render @incident %>
+
+<%# show a table of the gitleaks_results attached to this incident %>
+<div class="mt-8">
+  <h2 class="text-lg font-medium text-gray-900">Gitleaks Results</h2>
+  <table class="min-w-full divide-y divide-gray-200 mt-4">
+    <thead class="bg-gray-50">
+      <tr>
+        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Rule</th>
+        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">File</th>
+        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Start Line</th>
+        
+      </tr>
+    </thead>
+    <tbody class="bg-white divide-y divide-gray-200">
+      <% @incident.gitleaks_results.each do |result| %>
+        <tr>
+          <td class="px-6 py-4 whitespace-nowrap"><%= result.rule_id %></td>
+          <td class="px-6 py-4 whitespace-nowrap"><%= result.file %></td>
+          <td class="px-6 py-4 whitespace-nowrap"><%= result.start_line %></td>        
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

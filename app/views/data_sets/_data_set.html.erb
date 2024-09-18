@@ -1,0 +1,30 @@
+<div id="<%= dom_id(data_set) %>">
+  <div class="px-4 py-5 sm:p-6">
+    <h3 class="text-lg leading-6 font-medium text-gray-900">
+      <%= data_set.name %> Details
+    </h3>
+    <div class="mt-4 space-y-4">      
+      <p class="text-sm text-gray-500">
+        <span class="font-semibold">Source url:</span> <%= link_to_if(data_set.source_url, data_set.source_url, data_set.source_url) %>
+      </p>
+      <p class="text-sm text-gray-500">
+        <span class="font-semibold">Client:</span> <%= link_to_if(data_set.client, data_set.client, data_set.client) %>
+      </p>
+      <div class="text-sm text-gray-500">
+        <span class="font-semibold">Time range:</span>
+        <% if data_set.time_range_start.present? && data_set.time_range_end.present? %>
+          <%= data_set.time_range_start %> - <%= data_set.time_range_end %>
+        <% elsif data_set.time_range_start.present? %>
+          Starting from <%= data_set.time_range_start %>
+        <% elsif data_set.time_range_end.present? %>
+          Ending at <%= data_set.time_range_end %>
+        <% else %>
+          Not specified
+        <% end %>
+      </div>
+      <p class="text-sm text-gray-500">
+        <span class="font-semibold">Description:</span> <%= data_set.description %>
+      </p>
+    </div>
+  </div>
+</div>

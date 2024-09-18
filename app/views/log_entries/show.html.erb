@@ -1,0 +1,12 @@
+<div class="max-w-4xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+  <div class="mb-4 flex justify-between  space-x-2">
+    <%= link_to "Back to log entries", log_entries_path, class: "inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-blue-600 hover:text-blue-900" %>
+    <%= link_to "Edit this log entry", edit_log_entry_path(@log_entry), class: "inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-blue-600 hover:text-blue-900" %>
+    <%= button_to "Destroy this log entry", @log_entry, method: :delete, data: { confirm: "Are you sure you want to permanently delete this log entry?" }, class: "inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500" %>
+  </div>
+  <div class="bg-white shadow overflow-hidden sm:rounded-lg">    
+    <div class="border-t border-gray-200">
+      <%= render @log_entry %>
+    </div>
+  </div>
+</div>

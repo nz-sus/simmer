@@ -1,0 +1,85 @@
+= form_with(model: gitleaks_result, class: "space-y-4") do |form|
+  - if gitleaks_result.errors.any?
+    div.text-red-500
+      h2 = "#{pluralize(gitleaks_result.errors.count, "error")} prohibited this gitleaks_result from being saved:"
+      ul.list-disc.pl-5
+        - gitleaks_result.errors.each do |error|
+          li = error.full_message
+  div
+    = form.label :description, class: "block text-sm font-medium text-gray-700"
+    = form.text_field :description, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+
+  div.w-1/2
+    = form.label :severity, class: "block text-sm font-medium text-gray-700"
+    = form.select :severity, options_for_select(GitleaksResultService.severity_list, gitleaks_result.severity), {}, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+
+  div
+    = form.label :start_line, class: "block text-sm font-medium text-gray-700"
+    = form.number_field :start_line, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+
+  div
+    = form.label :end_line, class: "block text-sm font-medium text-gray-700"
+    = form.number_field :end_line, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+
+  div
+    = form.label :start_column, class: "block text-sm font-medium text-gray-700"
+    = form.number_field :start_column, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+
+  div
+    = form.label :end_column, class: "block text-sm font-medium text-gray-700"
+    = form.number_field :end_column, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+
+  div
+    = form.label :match, class: "block text-sm font-medium text-gray-700"
+    = form.text_field :match, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+
+  div
+    = form.label :secret, class: "block text-sm font-medium text-gray-700"
+    = form.text_field :secret, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+
+  div
+    = form.label :file, class: "block text-sm font-medium text-gray-700"
+    = form.text_field :file, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+
+  div
+    = form.label :symlink_file, class: "block text-sm font-medium text-gray-700"
+    = form.text_field :symlink_file, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+
+  div
+    = form.label :commit, class: "block text-sm font-medium text-gray-700"
+    = form.text_field :commit, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+
+  div
+    = form.label :entropy, class: "block text-sm font-medium text-gray-700"
+    = form.text_field :entropy, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+
+  div
+    = form.label :author, class: "block text-sm font-medium text-gray-700"
+    = form.text_field :author, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+
+  div
+    = form.label :email, class: "block text-sm font-medium text-gray-700"
+    = form.text_field :email, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+
+  div
+    = form.label :date, class: "block text-sm font-medium text-gray-700"
+    = form.datetime_field :date, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+
+  div
+    = form.label :message, class: "block text-sm font-medium text-gray-700"
+    = form.text_area :message, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+
+  div
+    = form.label :gltags, class: "block text-sm font-medium text-gray-700"
+    = form.text_area :gltags, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+
+  div
+    = form.label :rule_id, class: "block text-sm font-medium text-gray-700"
+    = form.text_field :rule_id, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+
+  div
+    = form.label :fingerprint, class: "block text-sm font-medium text-gray-700"
+    = form.text_field :fingerprint, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+
+  div
+    = form.submit class: "inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"

@@ -48,6 +48,7 @@ gem "bootsnap", require: false
 # gem "image_processing", "~> 1.2"
 
 group :development, :test do
+  gem "factory_bot_rails"
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[ mri windows ]
 end
@@ -61,16 +62,45 @@ group :development do
 
   # Speed up commands on slow machines / big apps [https://github.com/rails/spring]
   # gem "spring"
+  gem "solargraph", "~> 0.44.0"
+
 end
 
 group :test do
-  # Use system testing [https://guides.rubyonrails.org/testing.html#system-testing]
+  # Use system testing [https://guides.rubyonrails.org/testing.html#system-testing]  
+  gem 'rspec-rails'
   gem "capybara"
   gem "selenium-webdriver"
+  gem "webdrivers"
 end
 gem 'devise'
+gem "view_component"
 
 gem "elasticsearch"
 gem "elasticsearch-model", git: "https://github.com/elasticsearch/elasticsearch-rails.git", branch: "main"
 gem "elasticsearch-rails", git: "https://github.com/elasticsearch/elasticsearch-rails.git", branch: "main"
 gem 'redis-rails'
+
+gem 'cancancan'
+
+gem 'kaminari'
+
+gem "inline_svg", "~> 1.8"
+
+gem "pg_search", "~> 2.3"
+
+gem "tailwindcss-rails", "~>2.3.0"
+
+gem "noticed", "~> 1.5"
+
+gem "devise-async", "~> 1.0"
+
+gem "sidekiq", "~> 6.4"
+
+gem "whenever", "~> 1.0"
+
+gem "slim-rails"
+gem "cable_ready", "~> 5.0.3"
+
+gem 'acts-as-taggable-on', '~> 10.0'
+gem 'trix'

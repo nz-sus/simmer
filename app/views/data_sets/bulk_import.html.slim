@@ -1,0 +1,13 @@
+- active_client = active_client() # Assuming active_client is a helper method
+
+
+section#bulk-import data-controller="bulk-import" class="p-6 bg-white rounded-lg shadow-md"
+  p Bulk Import Gitleaks
+
+  - if active_client
+    p class="mb-4 text-green-600 font-semibold" Importing data for: #{active_client.name}
+  - else
+    p class="mb-4 text-red-600 font-semibold" Please select an active client to import data
+
+  input type="file" id="file-input" multiple="multiple" data-bulk-import-target="fileInput" disabled=(active_client.nil?) class="mb-4 p-2 border border-gray-300 rounded-md"
+  ul#file-list data-bulk-import-target="fileList" class="list-disc pl-6"
