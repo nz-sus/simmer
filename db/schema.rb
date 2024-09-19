@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_07_15_152943) do
+ActiveRecord::Schema[7.1].define(version: 2024_09_18_231308) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -117,6 +117,16 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_15_152943) do
     t.index ["noteable_type", "noteable_id"], name: "index_notes_on_noteable_type_and_noteable_id"
   end
 
+  create_table "service_tokens", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "token"
+    t.bigint "user_id", null: false
+    t.string "permission"
+    t.datetime "expires_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_service_tokens_on_user_id"
+  end
+
   create_table "taggings", force: :cascade do |t|
     t.bigint "tag_id"
     t.string "taggable_type"
@@ -168,5 +178,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_15_152943) do
   add_foreign_key "incidents", "clients"
   add_foreign_key "log_entries", "data_sets"
   add_foreign_key "masked_secrets", "clients"
+  add_foreign_key "service_tokens", "users"
   add_foreign_key "taggings", "tags"
 end

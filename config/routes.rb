@@ -22,6 +22,11 @@ Rails.application.routes.draw do
       post :import_json
     end
   end
+  resources :service_tokens do
+    collection do
+      post :create_service_token
+    end
+  end
   resources :clients do 
     collection do
       post :set_active
