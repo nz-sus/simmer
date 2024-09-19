@@ -25,9 +25,9 @@ jobs:
 
     # Customize the ruby version depending on your needs
     - name: Setup Ruby
-      uses: ruby/setup-ruby@latest
+      uses: ruby/setup-ruby@1
       with:
-        ruby-version: '3.2'
+        ruby-version: '3.3'
 
     - name: Setup Brakeman
       env:
