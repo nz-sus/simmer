@@ -3,6 +3,8 @@ class DataSet < ApplicationRecord
   has_many :log_entries, dependent: :destroy
   has_many :gitleaks_results, dependent: :destroy
 
+  validates :name, presence: true, uniqueness: { scope: :client_id }
+
   def self.available_schema_names
     # Get all the data schemas for the client
     %w[none gitleaks trufflehog trivy]
