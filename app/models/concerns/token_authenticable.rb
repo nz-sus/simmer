@@ -8,8 +8,12 @@ module TokenAuthenticable
 
   def authenticate_with_token_or_session!
     # if not logged in, check for a token
-    if current_user && current_user.is_a?(User)
+    if request.env['warden'].authenticated?(:user)
+      @current_user = request.env['warden'].user
+      @service_token = nil
       return
+    else
+      return unauthorized
     end
     token = request.headers['Authorization']&.split(' ')&.last
     return unauthorized unless token
@@ -32,11 +36,13 @@ module TokenAuthenticable
   end
 
   def can_read?
-    unauthorized unless service_token&.read_only? || service_token&.full_access?
+    return if service_token.nil? # Allow access if no token is present and user is logged in
+    unauthorized unless service_token.read_only? || service_token.full_access?
   end
 
   def can_write?
-    unauthorized unless service_token&.write_only? || service_token&.full_access?
+    return if service_token.nil? # Allow access if no token is present and user is logged in
+    unauthorized unless service_token.write_only? || service_token.full_access?
   end
 
   private
