@@ -49,6 +49,8 @@ class ClientsController < ApplicationController
 
     respond_to do |format|
       if @client.save
+        # Update the active client to the new client
+        session[:active_client_id] = @client.id
         format.html { redirect_to client_url(@client), notice: "Client was successfully created." }
         format.json { render :show, status: :created, location: @client }
       else
