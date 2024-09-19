@@ -123,6 +123,13 @@ Note that tailwind only includes classes referenced in the code unless specifica
 
 Now you can make changes to the JavaScript and CSS files during development and see the updates reflected in the Simmer application.
 
+* API Access
+You can create a service token for api access and make requests to api paths using 
+  ```
+  curl -H "Authorization: Bearer <TOKEN>" https://localhost:3000/api/v1/clients/
+  ```
+  You'll need to add -k before -H to ignore ssl certs unless you've installed a proper one. 
+
 * Deployment instructions
 
 * TODO

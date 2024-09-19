@@ -1,9 +1,11 @@
 # app/controllers/api/v1/data_sets_controller.rb
 module Api
   module V1
-    class DataSetsController < ApplicationController
+    class DataSetsController < ApiController
       before_action :set_client
       before_action :set_data_set, only: [:show, :update, :destroy]
+      before_action :can_read?, only: [:index, :show]
+      before_action :can_write?, only: [:create, :update, :destroy]
 
       def index
         @data_sets = @client.data_sets

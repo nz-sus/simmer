@@ -2,11 +2,15 @@
 module TokenAuthenticable
   extend ActiveSupport::Concern
 
-  included do
-    before_action :authenticate_with_token!
+  included do    
+    before_action :authenticate_with_token_or_session!
   end
 
-  def authenticate_with_token!
+  def authenticate_with_token_or_session!
+    # if not logged in, check for a token
+    if current_user && current_user.is_a?(User)
+      return
+    end
     token = request.headers['Authorization']&.split(' ')&.last
     return unauthorized unless token
 
@@ -25,6 +29,14 @@ module TokenAuthenticable
 
   def service_token
     @service_token
+  end
+
+  def can_read?
+    unauthorized unless service_token&.read_only? || service_token&.full_access?
+  end
+
+  def can_write?
+    unauthorized unless service_token&.write_only? || service_token&.full_access?
   end
 
   private
