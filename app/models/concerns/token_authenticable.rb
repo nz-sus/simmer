@@ -12,8 +12,6 @@ module TokenAuthenticable
       @current_user = request.env['warden'].user
       @service_token = nil
       return
-    else
-      return unauthorized
     end
     token = request.headers['Authorization']&.split(' ')&.last
     return unauthorized unless token

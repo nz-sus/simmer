@@ -45,7 +45,11 @@ module Api
       private
 
       def set_client
-        @client = Client.find(session[:active_client_id])
+        active_client_id = session[:active_client_id]
+        if params[:client_id]
+          active_client_id = params[:client_id]
+        end
+        @client = Client.find(active_client_id)
       end
 
       def set_data_set

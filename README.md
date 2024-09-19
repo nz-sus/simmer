@@ -129,6 +129,15 @@ You can create a service token for api access and make requests to api paths usi
   curl -H "Authorization: Bearer <TOKEN>" https://localhost:3000/api/v1/clients/
   ```
   You'll need to add -k before -H to ignore ssl certs unless you've installed a proper one. 
+  
+  Here's an example of how to add gitleaks json output to a new or existing data set. Data sets are looked up by name. Repeated requests are idempotent; duplicates will not be added to the same data set. 
+  ```
+  curl -k -X POST https://localhost:3000/api/v1/data_sets \
+  -F "gitleaks_json=@test_1_event_in_array.json" \
+  -F "data_set[name]=test_1_event_in_array" \
+  -F "client_id=<REPLACE_WITH_CLIENT_UUID>" \
+  -H "Authorization: Bearer <REPLACE_WITH_API_TOKEN>"
+  ```
 
 * Deployment instructions
 
