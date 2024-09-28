@@ -1,11 +1,9 @@
 # app/controllers/api/v1/data_sets_controller.rb
 module Api
-  module V1
+  module Internal
     class DataSetsController < ApplicationController
       before_action :set_client
-      before_action :set_data_set, only: [:show, :update, :destroy]
-      before_action :can_read?, only: [:index, :show]
-      before_action :can_write?, only: [:create, :update, :destroy]
+      before_action :set_data_set, only: %i[show update destroy]
 
       def index
         @data_sets = @client.data_sets
@@ -46,9 +44,7 @@ module Api
 
       def set_client
         active_client_id = session[:active_client_id]
-        if params[:client_id]
-          active_client_id = params[:client_id]
-        end
+        active_client_id = params[:client_id] if params[:client_id]
         @client = Client.find(active_client_id)
       end
 
@@ -70,20 +66,19 @@ module Api
         entries.each do |entry|
           # add log entry to data set, gitleaks entry is created automatically
           # Only create the log entry if this data_set and data_json combo doesn't already exist
-          if LogEntry.exists?(data_set: data_set, data_json: entry.to_json)
-            logger.info "Skipping duplicate entry"
+          if LogEntry.exists?(data_set:, data_json: entry.to_json)
+            logger.info 'Skipping duplicate entry'
             next
           end
           LogEntry.create!(
-          title: entry['Message'],
-          data_schema: schema_name,
-          source: source_filename,
-          timestamp: entry_timestamp,
-          #save the entry as a json string
-          data_json: entry.to_json,
-          data_set: data_set
+            title: entry['Message'],
+            data_schema: schema_name,
+            source: source_filename,
+            timestamp: entry_timestamp,
+            # save the entry as a json string
+            data_json: entry.to_json,
+            data_set:
           )
-          
         end
       end
     end

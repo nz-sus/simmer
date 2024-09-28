@@ -53,6 +53,10 @@ Rails.application.routes.draw do
   # API for the frontend to make AJAX requests
   # config/routes.rb
   namespace :api do
+    namespace :internal do
+      resources :clients, only: [:create, :update, :destroy, :show, :index]
+      resources :data_sets, only: [:create, :update, :destroy, :show, :index]      
+    end
     namespace :v1 do
       resources :clients, only: [:create, :update, :destroy, :show, :index]
       resources :data_sets, only: [:create, :update, :destroy, :show, :index]      

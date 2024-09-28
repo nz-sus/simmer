@@ -27,7 +27,7 @@ export default class extends Controller {
     //append the filename to the formData as data_set[name]
     formData.append("data_set[name]", file.name)
 
-    fetch("/api/v1/data_sets", {
+    fetch("/api/internal/data_sets", {
       method: "POST",
       body: formData,
       headers: {

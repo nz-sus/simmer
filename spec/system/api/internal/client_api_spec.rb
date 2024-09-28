@@ -1,7 +1,7 @@
 # spec/system/api/v1/client_api_spec.rb
 require 'rails_helper'
 
-RSpec.describe 'Client API', type: :system do
+RSpec.describe 'Client API', type: :request do
   before do
     driven_by(:rack_test)
     # Create a User and Authenticate
@@ -20,7 +20,7 @@ RSpec.describe 'Client API', type: :system do
   describe 'Create and Destroy Client' do
     it 'creates and destroys a client successfully' do
       # Create Client
-      post '/api/v1/clients', params: valid_client_params
+      post '/api/internal/clients', params: valid_client_params
       expect(response).to have_http_status(:created)
 
       created_client = JSON.parse(response.body)
@@ -29,17 +29,17 @@ RSpec.describe 'Client API', type: :system do
       expect(created_client['description']).to eq('A client for testing purposes')
 
       # Destroy Client
-      delete "/api/v1/clients/#{client_id}"
+      delete "/api/internal/clients/#{client_id}"
       expect(response).to have_http_status(:no_content)
 
       # Verify Client is Destroyed
-      get "/api/v1/clients/#{client_id}"
+      get "/api/internal/clients/#{client_id}"
       expect(response).to have_http_status(:not_found)
     end
 
     it 'fails to create a client with invalid parameters' do
       # Attempt to Create Client with Invalid Params
-      post '/api/v1/clients', params: invalid_client_params
+      post '/api/internal/clients', params: invalid_client_params
       expect(response).to have_http_status(:unprocessable_entity)
 
       errors = JSON.parse(response.body)
