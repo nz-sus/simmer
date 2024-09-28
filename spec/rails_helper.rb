@@ -3,14 +3,13 @@ require 'spec_helper'
 ENV['RAILS_ENV'] ||= 'test'
 require_relative '../config/environment'
 # Prevent database truncation if the environment is production
-abort("The Rails environment is running in production mode!") if Rails.env.production?
+abort('The Rails environment is running in production mode!') if Rails.env.production?
 require 'rspec/rails'
 # Add additional requires below this line. Rails is not loaded until this point!
 require 'devise'
 require 'capybara/rspec'
 require 'support/devise'
 require 'support/request_spec_helper'
-
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
 # spec/support/ and its subdirectories. Files matching `spec/**/*_spec.rb` are
@@ -37,9 +36,11 @@ end
 RSpec.configure do |config|
   config.include FactoryBot::Syntax::Methods
 
-  #For authenticated user simulation
+  # For authenticated user simulation
   config.include Devise::Test::IntegrationHelpers, type: :request
-  config.include RequestSpecHelper, type: :request
+  config.include Devise::Test::ControllerHelpers, type: :controller
+
+  # config.include RequestSpecHelper, type: :request
 
   config.include Warden::Test::Helpers
 
@@ -74,6 +75,5 @@ RSpec.configure do |config|
   # Filter lines from Rails gems in backtraces.
   config.filter_rails_from_backtrace!
   # arbitrary gems may also be filtered via:
-  # config.filter_gems_from_backtrace("gem name")  
-
+  # config.filter_gems_from_backtrace("gem name")
 end

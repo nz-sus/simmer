@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_09_18_231308) do
+ActiveRecord::Schema[7.1].define(version: 2024_09_28_035502) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -124,6 +124,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_09_18_231308) do
     t.datetime "expires_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.uuid "client_id", null: false
+    t.index ["client_id"], name: "index_service_tokens_on_client_id"
     t.index ["user_id"], name: "index_service_tokens_on_user_id"
   end
 
@@ -178,6 +180,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_09_18_231308) do
   add_foreign_key "incidents", "clients"
   add_foreign_key "log_entries", "data_sets"
   add_foreign_key "masked_secrets", "clients"
+  add_foreign_key "service_tokens", "clients"
   add_foreign_key "service_tokens", "users"
   add_foreign_key "taggings", "tags"
 end

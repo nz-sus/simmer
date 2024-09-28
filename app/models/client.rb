@@ -3,12 +3,13 @@ class Client < ApplicationRecord
   has_many :log_entries, through: :data_sets
   has_many :gitleaks_results, through: :data_sets
   has_many :masked_secrets
+  has_many :service_tokens
 
   def to_s
     name
   end
 
-  def report_name(report_type='leak_report')
+  def report_name(report_type = 'leak_report')
     # This is the file name of the report that will be generated
     # Include the client name and the current date in YYYYMMDD format with underscores instead of spaces
     "SuS-#{name.underscore}_#{Time.now.strftime('%Y%m%d')}_#{report_type}"

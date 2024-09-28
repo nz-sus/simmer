@@ -26,7 +26,7 @@ services:
     volumes:
       - simmer_postgres:/var/lib/postgresql/data
     env_file:
-      - .env.config.dev      
+      - .env.development    
     networks:
       - simmer
   redis:
@@ -41,7 +41,7 @@ services:
     build: .
     command: bin/docker-start
     env_file:
-      - .env.config.dev    
+      - .env.development  
     networks:
       - simmer      
     volumes:

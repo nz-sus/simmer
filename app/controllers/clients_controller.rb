@@ -1,9 +1,13 @@
 class ClientsController < ApplicationController
-  before_action :set_client, only: %i[ show edit update destroy export report ]
+  before_action :set_client, only: %i[show edit update destroy export report]
 
   def set_active
     session[:active_client_id] = params[:client_id]
-    redirect_to client_path(session[:active_client_id])
+    if session[:active_client_id].blank?
+      redirect_to clients_path
+    else
+      redirect_to client_path(session[:active_client_id])
+    end
   end
 
   def set_minimum_display_severity
@@ -15,24 +19,22 @@ class ClientsController < ApplicationController
   def index
     @clients = Client.all
   end
-  
+
   # GET /clients/1 or /clients/1.json
   def show
     @minimum_display_severity = session[:minimum_display_severity] || 'UNKNOWN'
   end
 
-  def export    
-    render template: 'clients/show', layout: 'export'    
+  def export
+    render template: 'clients/show', layout: 'export'
   end
 
   def report
-    @minimum_display_severity = session[:minimum_display_severity] || 'UNKNOWN'    
-    if params[:export] == 'html'    
-      render template: 'clients/report', layout: 'export'    
-    end
+    @minimum_display_severity = session[:minimum_display_severity] || 'UNKNOWN'
+    return unless params[:export] == 'html'
+
+    render template: 'clients/report', layout: 'export'
   end
-
-
 
   # GET /clients/new
   def new
@@ -51,7 +53,7 @@ class ClientsController < ApplicationController
       if @client.save
         # Update the active client to the new client
         session[:active_client_id] = @client.id
-        format.html { redirect_to client_url(@client), notice: "Client was successfully created." }
+        format.html { redirect_to client_url(@client), notice: 'Client was successfully created.' }
         format.json { render :show, status: :created, location: @client }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -64,7 +66,7 @@ class ClientsController < ApplicationController
   def update
     respond_to do |format|
       if @client.update(client_params)
-        format.html { redirect_to client_url(@client), notice: "Client was successfully updated." }
+        format.html { redirect_to client_url(@client), notice: 'Client was successfully updated.' }
         format.json { render :show, status: :ok, location: @client }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -78,19 +80,20 @@ class ClientsController < ApplicationController
     @client.destroy!
 
     respond_to do |format|
-      format.html { redirect_to clients_url, notice: "Client was successfully destroyed." }
+      format.html { redirect_to clients_url, notice: 'Client was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_client
-      @client = Client.find(params[:id])
-    end
 
-    # Only allow a list of trusted parameters through.
-    def client_params
-      params.require(:client).permit(:name)
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_client
+    @client = Client.find(params[:id])
+  end
+
+  # Only allow a list of trusted parameters through.
+  def client_params
+    params.require(:client).permit(:name)
+  end
 end

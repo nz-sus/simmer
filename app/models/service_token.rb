@@ -1,10 +1,12 @@
 class ServiceToken < ApplicationRecord
   belongs_to :user
+  belongs_to :client
 
   before_create :generate_token
 
   validates :token, uniqueness: true
   validates :user, presence: true
+  validates :client, presence: true
   validates :permission, presence: true, inclusion: { in: %w[read_only write_only read_write] }
 
   scope :valid, -> { where('expires_at IS NULL OR expires_at > ?', Time.current) }

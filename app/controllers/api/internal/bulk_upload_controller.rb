@@ -1,6 +1,4 @@
-class Api::V1::BulkUploadController < ApiController
-  include TokenAuthenticable
-
+class Api::Internal::BulkUploadController < ApplicationController
   # This action requires read permission
   def index
     if service_token.write_only?
