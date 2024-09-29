@@ -126,7 +126,7 @@ Now you can make changes to the JavaScript and CSS files during development and 
 * API Access
 You can create a service token for api access and make requests to api paths using 
   ```
-  curl -H "Authorization: Bearer <TOKEN>" https://localhost:3000/api/v1/clients/
+  curl -H "Authorization: Bearer <TOKEN>" https://localhost:3000/api/v1/data_sets/
   ```
   You'll need to add -k before -H to ignore ssl certs unless you've installed a proper one. 
   
