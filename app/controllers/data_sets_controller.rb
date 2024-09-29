@@ -3,6 +3,7 @@ class DataSetsController < ApplicationController
 
   # GET /data_sets or /data_sets.json
   def index
+    active_client = fetch_active_client
     @data_sets = active_client ? active_client.data_sets : DataSet.all 
   end
 

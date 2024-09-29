@@ -17,9 +17,9 @@ class ServiceTokensController < ApplicationController
     permission = service_token_params[:permission] || 'write_only'
 
     # Create the service token with the given expiration date and permission
-    active_client_id = session[:active_client_id]
+    
     # lookup the client
-    client = Client.find(active_client_id)
+    client = fetch_active_client
     if client.nil?
       flash[:notice] = 'Choose a client first'
     else
