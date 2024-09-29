@@ -19,7 +19,7 @@ class GitleaksResultsController < ApplicationController
     available_data_sets = active_client ? active_client.data_sets : DataSet.all
     @available_filters['data_set'] = available_data_sets.pluck(:id, :name)
 
-    gitleaks_results_with_includes = GitleaksResult.includes([ :data_set, :log_entry, :notes])
+    gitleaks_results_with_includes = GitleaksResult.includes([ :data_set, :log_entry, :notes, :tags, :masked_secret, :client])
     # if there is an active_client, only show results for that client
     if active_client
       gitleaks_results_with_includes = gitleaks_results_with_includes.where(data_set_id: active_client.data_sets.pluck(:id))
