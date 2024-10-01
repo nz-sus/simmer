@@ -66,9 +66,9 @@ table.min-w-full.divide-y.divide-gray-200.border-t-2.border-gray-300.my-4
                 = link_to 'Create Incident', new_incident_path(gitleaks_result_ids: gitleaks_result.id, incident:{name:gitleaks_result.name_for_incident} ), class: 'block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100'                
               li
                 = link_to 'Destroy Result', gitleaks_result_path(gitleaks_result, format: :html), method: :delete, data: { turbo: false, confirm: 'Are you sure?' }, class: 'block px-4 py-2 text-sm text-red-600 hover:bg-gray-100'
-          / Close button
-          button type="button" data-action="click->action-menu#closeMenu" class="absolute top-0 right-0 mt-2 mr-2 text-gray-400 hover:text-gray-600"
-            i.fas.fa-times          
+            / Close button
+            button type="button" data-action="click->action-menu#closeMenu" class="absolute top-0 right-0 mt-2 mr-2 text-gray-400 hover:text-gray-600"
+              i.fas.fa-times          
       tr.hidden.detailPane
         td colspan="8"  
           .details-panel.p-4.bg-gray-300.rounded-lg.shadow-inner
