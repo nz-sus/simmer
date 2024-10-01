@@ -10,6 +10,7 @@ class GitleaksResultsController < ApplicationController
     @active_filters = session[:filters] || {}
     @filter_value_map = GitleaksResult.filter_value_map
 
+    active_client = fetch_active_client
     %w[severity rule_id commit file].each do |filter|
       glr = active_client ? active_client.gitleaks_results : GitleaksResult.all
       @available_filters[filter] = glr.distinct.pluck(filter).sort
@@ -19,7 +20,7 @@ class GitleaksResultsController < ApplicationController
     available_data_sets = active_client ? active_client.data_sets : DataSet.all
     @available_filters['data_set'] = available_data_sets.pluck(:id, :name)
 
-    gitleaks_results_with_includes = GitleaksResult.includes([ :data_set, :log_entry, :notes])
+    gitleaks_results_with_includes = GitleaksResult.includes([ :data_set, :log_entry, :notes, :tags, :masked_secret, :client])
     # if there is an active_client, only show results for that client
     if active_client
       gitleaks_results_with_includes = gitleaks_results_with_includes.where(data_set_id: active_client.data_sets.pluck(:id))
@@ -180,6 +181,7 @@ class GitleaksResultsController < ApplicationController
     @target_action = { controller: controller_name, action: :index }
     
     @gitleaks_results = GitleaksResult.includes([:data_set, :log_entry, :notes, :tags])
+    active_client = fetch_active_client
     if active_client
       @gitleaks_results = @gitleaks_results.where(data_set_id: active_client.data_sets.pluck(:id))
     end

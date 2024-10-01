@@ -126,7 +126,7 @@ Now you can make changes to the JavaScript and CSS files during development and 
 * API Access
 You can create a service token for api access and make requests to api paths using 
   ```
-  curl -H "Authorization: Bearer <TOKEN>" https://localhost:3000/api/v1/clients/
+  curl -H "Authorization: Bearer <TOKEN>" https://localhost:3000/api/v1/data_sets/
   ```
   You'll need to add -k before -H to ignore ssl certs unless you've installed a proper one. 
   
@@ -146,3 +146,25 @@ You can create a service token for api access and make requests to api paths usi
 - Add tests
 
 - Add response playbook links to notion docs/copy local 
+
+* Dev Tips
+** running in dev
+```
+yarn build
+docker compose up --build
+```
+** Javascript changes
+```
+#end running docker containers
+yarn build
+#rebuild docker
+docker compose up --build
+```
+
+** Database Schema changes
+```
+#end running docker containers
+bin/rails db:migrate #to update local schema.rb
+docker compose up --build 
+```
+
