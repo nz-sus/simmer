@@ -10,7 +10,7 @@ export default class extends Controller {
     this.containerTarget.classList.toggle("hidden");
   }
 
-  closeMenu() {
+  closeMenu(event) {
     this.containerTarget.classList.add("hidden");
   }
   
