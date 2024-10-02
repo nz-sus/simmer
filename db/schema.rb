@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_10_01_233113) do
+ActiveRecord::Schema[7.1].define(version: 2024_10_02_022921) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -79,7 +79,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_10_01_233113) do
     t.integer "start_column"
     t.integer "end_column"
     t.string "match"
-    t.string "secret"
     t.string "file"
     t.string "symlink_file"
     t.string "commit"
@@ -97,6 +96,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_10_01_233113) do
     t.string "severity", default: "UNKNOWN", null: false
     t.uuid "data_set_id"
     t.uuid "masked_secret_id"
+    t.text "encrypted_secret"
     t.index ["log_entry_id"], name: "index_gitleaks_results_on_log_entry_id"
     t.index ["masked_secret_id"], name: "index_gitleaks_results_on_masked_secret_id"
     t.index ["severity"], name: "index_gitleaks_results_on_severity"

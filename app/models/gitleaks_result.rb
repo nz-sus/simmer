@@ -38,7 +38,10 @@ class GitleaksResult < ApplicationRecord
   has_and_belongs_to_many :incidents
   #has_many :notes, as: :noteable, dependent: :destroy
   has_rich_text :note
-
+  encrypts :encrypted_secret
+  def secret
+    self.encrypted_secret
+  end
 
   acts_as_taggable_on :tags
   

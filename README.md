@@ -168,3 +168,9 @@ bin/rails db:migrate #to update local schema.rb
 docker compose up --build 
 ```
 
+** Encryption Keys
+Columns containing secrets are encrypted at the database level using an key from the credentials file. Setup details are here: https://guides.rubyonrails.org/active_record_encryption.html
+```
+bin/rails db:encryption:init
+bin/rails credentials:edit
+```
