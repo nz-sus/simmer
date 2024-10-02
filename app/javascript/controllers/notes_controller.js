@@ -40,7 +40,6 @@ export default class extends Controller {
       //check the response status and append the new note to the list if successful.
       if (response.ok) {
         response.text().then(html => {
-          document.querySelector(".notes-list").insertAdjacentHTML("afterbegin", html);
           this.isDirty = false;
           //Clear the trix editor
           this.getTrixEditor().editor.loadHTML("");

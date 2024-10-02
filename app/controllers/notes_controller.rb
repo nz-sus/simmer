@@ -1,22 +1,15 @@
 class NotesController < ApplicationController
   def show
-    @noteable = class_for_note(params[:type]).find_by_id(params[:id])
-    @notes = @noteable.notes
-    @single_note = @noteable.note
-    #check if we are showing a single note through the model relationship
-    is_single_note = @noteable.class.reflect_on_association(:note).macro == :has_one
+    @note_class = class_for_note(params[:type]).find_by_id(params[:id])
+    @note = @note_class.note
 
-    render partial: 'notes/modal', locals: { notes: @notes, noteable: @noteable, single_note: @single_note, is_single_note: is_single_note}
+    render partial: 'notes/modal', locals: { note: @note, noteable: @note_class}
   end
   def create
-    @noteable = class_for_note(params[:type]).find_by_id(params[:id])
-    is_single_note = @noteable.class.reflect_on_association(:note).macro == :has_one
-    @note = if is_single_note
-      @noteable.build_note(content: params[:content])
-    else
-      @noteable.notes.new(content: params[:content])    
-    end
-    @note.save
+    @note_class = class_for_note(params[:type]).find_by_id(params[:id])
+    
+    @note_class.update!(note: note_params[:content])
+    
     render partial: 'notes/note', locals: { note: @note }
   end
 
@@ -31,5 +24,9 @@ class NotesController < ApplicationController
     else
       raise "Invalid note type"
     end
+  end
+
+  def note_params
+    params.require(:note).permit(:content)
   end
 end

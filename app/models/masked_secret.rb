@@ -1,7 +1,8 @@
 class MaskedSecret < ApplicationRecord
   belongs_to :client
   has_many :gitleaks_results
-  has_one :note, as: :noteable, dependent: :destroy
+  #has_one :note, as: :noteable, dependent: :destroy
+  has_rich_text :note
 
   after_update :update_gitleaks_results
 

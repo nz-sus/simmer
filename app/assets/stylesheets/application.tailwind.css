@@ -104,3 +104,4 @@ a.px-2.py-1.border.border-gray-300.rounded.hover:bg-gray-100
 body {
   font-family: 'Manrope', sans-serif;
 }
+@import 'actiontext.css';
