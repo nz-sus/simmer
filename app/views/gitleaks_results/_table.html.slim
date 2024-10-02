@@ -39,7 +39,7 @@ table.min-w-full.divide-y.divide-gray-200.border-t-2.border-gray-300.my-4
               - when 'NONE', 'UNKNOWN'
                 i.fas.fa-question-circle.text-gray-500 data-severity-target="icon"   
             div data-action="click->notes#toggleModal"  
-              - if gitleaks_result.notes.loaded? && gitleaks_result.notes.any?
+              - unless gitleaks_result.note.blank?
                 i.fas.fa-book.text-gray-700 data-notes-target="icon"
               - else
                 i.fas.fa-book.text-gray-200 data-notes-target="icon"

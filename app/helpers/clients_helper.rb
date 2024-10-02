@@ -1,6 +1,6 @@
 module ClientsHelper
   def fetch_active_client
-    return nil if session[:active_client_id].empty?
+    return nil unless session[:active_client_id].present?
     
     Client.find(session[:active_client_id])
   end

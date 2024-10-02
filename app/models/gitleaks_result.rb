@@ -36,7 +36,8 @@ class GitleaksResult < ApplicationRecord
   belongs_to :data_set, optional: true
   has_one :client, through: :data_set
   has_and_belongs_to_many :incidents
-  has_many :notes, as: :noteable, dependent: :destroy
+  #has_many :notes, as: :noteable, dependent: :destroy
+  has_rich_text :note
 
 
   acts_as_taggable_on :tags
